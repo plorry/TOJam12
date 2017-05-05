@@ -32,6 +32,7 @@ var game = {
 
         // add our player entity in the entity pool
         me.pool.register("mainPlayer", game.PlayerEntity);
+        me.pool.register("dogPlayer", game.DogEntity);
 
         // Start the game.
         me.state.change(me.state.PLAY);

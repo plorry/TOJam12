@@ -32,6 +32,17 @@ game.PlayerEntity = me.Entity.extend({
      */
     onCollision : function (response, other) {
         // Make all other objects solid
-        return true;
+      return true;
     }
+});
+
+
+game.DogEntity = me.Entity.extend({
+  init: function(x, y, settings) {
+    this._super(me.Entity, 'init', [x, y, {
+      image: 'dogtest',
+      height: 32,
+      width: 32
+    }]);
+  }
 });

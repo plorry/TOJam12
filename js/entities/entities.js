@@ -46,3 +46,16 @@ game.DogEntity = me.Entity.extend({
     }]);
   }
 });
+
+game.BoxerEntity = me.Entity.extend({
+  init: function(x, y, settings) {
+    this._super(me.Entity, 'init', [1, 20, {
+      image: 'boxer',
+      height: 111,
+      width: 49
+    }]);
+    this.renderable.addAnimation("static", [1, 2]);
+    // set initial animation
+    this.renderable.setCurrentAnimation("static"); 
+  }
+});

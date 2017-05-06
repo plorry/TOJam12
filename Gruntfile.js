@@ -1,6 +1,18 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+  
+    babel: {
+      options: {
+        sourceMap: true,
+        presets: ['babel-preset-es2015']
+      },
+      dist: {
+        files: {
+          'build/js/app.babel.js': 'build/js/app.js'
+        }
+      }
+    },
 
     concat: {
       dist: {
@@ -89,7 +101,7 @@ module.exports = function(grunt) {
       dist: {
         files: {
           'build/js/app.min.js': [
-            'build/js/app.js'
+            'build/js/app.babel.js'
           ]
         }
       }
@@ -151,7 +163,7 @@ module.exports = function(grunt) {
     watch: {
       resources: {
         files: ['data/**/*', 'js/**/*'],
-        tasks: ['resources', 'concat', 'replace', 'uglify', 'copy', 'clean:app'],
+        tasks: ['resources', 'concat', 'replace', 'babel', 'uglify', 'copy', 'clean:app'],
         options: {
           spawn: false,
         },
@@ -170,6 +182,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-download-electron');
   grunt.loadNpmTasks('grunt-asar');
+  grunt.loadNpmTasks('grunt-babel');
 
   // Custom Tasks
   grunt.loadTasks('tasks');
@@ -178,6 +191,7 @@ module.exports = function(grunt) {
     'resources',
     'concat',
     'replace',
+    'babel',
     'uglify',
     'copy',
     'processhtml',
@@ -188,6 +202,7 @@ module.exports = function(grunt) {
     'resources',
     'concat',
     'replace',
+    'babel',
     'uglify',
     'copy',
     'clean:app',

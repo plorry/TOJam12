@@ -31,9 +31,9 @@ var game = {
         me.state.set(me.state.PLAY, new game.BoxingScreen());
 
         // add our player entity in the entity pool
-        me.pool.register("mainPlayer", game.PlayerEntity);
         me.pool.register("dogPlayer", game.DogEntity);
         me.pool.register("boxer", game.BoxerEntity);
+        me.pool.register("peebers", game.PeebersEntity);
 
         // Start the game.
         me.state.change(me.state.PLAY);

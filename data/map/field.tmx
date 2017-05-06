@@ -6,6 +6,6 @@
   </data>
  </layer>
  <imagelayer name="Image Layer 1">
-  <image source="../img/basballfield.png"/>
+  <image source="../img/ring.png"/>
  </imagelayer>
 </map>

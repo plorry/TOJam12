@@ -150,8 +150,8 @@ module.exports = function(grunt) {
 
     watch: {
       resources: {
-        files: ['data/**/*'],
-        tasks: ['resources'],
+        files: ['data/**/*', 'js/**/*'],
+        tasks: ['resources', 'concat', 'replace', 'uglify', 'copy', 'clean:app'],
         options: {
           spawn: false,
         },

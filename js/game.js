@@ -28,7 +28,7 @@ var game = {
     // Run on game resources loaded.
     "loaded" : function () {
         me.state.set(me.state.MENU, new game.TitleScreen());
-        me.state.set(me.state.PLAY, new game.PlayScreen());
+        me.state.set(me.state.PLAY, new game.BoxingScreen());
 
         // add our player entity in the entity pool
         me.pool.register("mainPlayer", game.PlayerEntity);

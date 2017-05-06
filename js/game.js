@@ -19,6 +19,8 @@ var game = {
 
         // Initialize the audio.
         me.audio.init("mp3,ogg");
+        // set keys
+        me.input.bindKey(me.input.KEY.SPACE, "input", true);
 
         // set and load all resources.
         // (this will also automatically switch to the loading screen)
@@ -31,8 +33,9 @@ var game = {
         me.state.set(me.state.PLAY, new game.BoxingScreen());
 
         // add our player entity in the entity pool
-        me.pool.register("mainPlayer", game.PlayerEntity);
         me.pool.register("dogPlayer", game.DogEntity);
+        me.pool.register("boxer", game.BoxerEntity);
+        me.pool.register("peebers", game.PeebersEntity);
 
         // Start the game.
         me.state.change(me.state.PLAY);

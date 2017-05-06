@@ -19,6 +19,8 @@ var game = {
 
         // Initialize the audio.
         me.audio.init("mp3,ogg");
+        // set keys
+        me.input.bindKey(me.input.KEY.SPACE, "input", true);
 
         // set and load all resources.
         // (this will also automatically switch to the loading screen)

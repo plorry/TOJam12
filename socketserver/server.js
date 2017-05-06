@@ -22,9 +22,10 @@ http.listen(app.get('port'), function(){
 });
 
 var gamevars = {
-  gamestate: 1,
+  gamestate: 0,
   players: 0,
   presses: 0,
+  knockouts: 0,
 }
 
 serv_io.sockets.on('connection', function (socket){
@@ -44,6 +45,11 @@ serv_io.sockets.on('connection', function (socket){
     console.log('player has left');
     console.log('current playercount: ' + gamevars.players);
     socket.broadcast.emit('playerleft');
+  })
+
+  socket.on('beleive', function(){
+    gamevars.gamestate = 0;
+
   })
 
 });

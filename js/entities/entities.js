@@ -22,6 +22,7 @@ game.MovingEntity = me.Entity.extend({
   },
 
   update: function update(dt) {
+    console.log(this.dest)
     this.pos.x += (Math.sign(this.dest[0] - this.pos.x)) * this.speed;
     this.pos.y += (Math.sign(this.dest[1] - this.pos.y)) * this.speed;
 
@@ -54,11 +55,7 @@ game.BoxerEntity = game.MovingEntity.extend({
     // set initial animation
     this.renderable.setCurrentAnimation("static");
     // set positions
-    this.POS = {
-      start: [20, 20],
-      ready: [150, 40],
-      punch: [150, 80]
-    };
+    this.POS = settings.POS;
     this.bounceHeight = 5;
     this.getReady();
   },
@@ -102,7 +99,7 @@ game.BoxerEntity = game.MovingEntity.extend({
 
 game.PeebersEntity = game.MovingEntity.extend({
   init: function(x, y, settings) {
-    this._super(game.MovingEntity, 'init', [140, 200, {
+    this._super(game.MovingEntity, 'init', [x, y, {
       image: 'peebers',
       height: 52,
       width: 63
@@ -134,13 +131,9 @@ game.PeebersEntity = game.MovingEntity.extend({
     this.renderable.setCurrentAnimation("fighting");
     this.down = false;
     this.canHit = true;
-    this.POS = {
-      initial: [140, 150],
-      bounce: [140, 170],
-      offscreen: [140, 240]
-    };
+    this.POS = settings.POS;
     this.speed = 0.5;
-    this.setDest("initial");
+    this.setDest("ready");
   },
 
   hit: function hit() {
@@ -178,10 +171,12 @@ game.PeebersEntity = game.MovingEntity.extend({
     if(game.data.state == "SULK") {
       me.audio.stop('peebersback');
       me.audio.play('peebersad', true);
+      this.setDest('next');
     }
-    if(game.data.state == "COMEBACK") {
+    if(game.data.state == "COMEBACK" && me.state.cu) {
       me.audio.stop('peebersad');
       me.audio.play('peebersback', true);
+      this.setDest('initial');
     }
     return (this._super(game.MovingEntity, 'update', [dt]));
   }

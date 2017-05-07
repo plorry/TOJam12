@@ -14,13 +14,28 @@ game.BoxingScreen = me.ScreenObject.extend({
     /**
      *  action to perform on state change
      */
-    onResetEvent: function() {
-      me.levelDirector.loadLevel("field");
+    onResetEvent: function(scene, state) {
+      me.levelDirector.loadLevel(scene);
+      game.data.state = state;
       game.data.stamina = 100;
       game.data.canCheer = false;
       // add boxer
-      me.game.world.addChild(me.pool.pull("boxer"));
-      me.game.world.addChild(me.pool.pull("peebers"));
+      me.game.world.addChild(me.pool.pull("boxer", 1, 20, {
+          POS : {
+            start: [20, 20],
+            ready: [150, 40],
+            punch: [150, 80]
+          },
+        })
+      );
+      me.game.world.addChild(me.pool.pull("peebers", 140, 200, {
+          POS : {
+            ready: [140, 150],
+            bounce: [140, 170],
+            offscreen: [140, 240]
+          },
+        })
+      );
         // Add our HUD to the game world, add it last so that this is on top of the rest.
         // Can also be forced by specifying a "Infinity" z value to the addChild function.
       this.HUD = new game.HUD.Container();

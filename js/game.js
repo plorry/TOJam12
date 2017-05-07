@@ -38,7 +38,7 @@ var game = {
         me.pool.register("peebers", game.PeebersEntity);
 
         // Start the game.
-        me.state.change(me.state.PLAY);
+        me.state.change(me.state.PLAY, "field", "GETTINGUP");
         me.audio.play('peebersback', true);
     }
 };

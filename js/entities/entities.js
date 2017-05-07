@@ -21,10 +21,10 @@ game.MovingEntity = me.Entity.extend({
     this.speed = 1;
   },
 
-  update: function update(dt) { 
+  update: function update(dt) {
     this.pos.x += (Math.sign(this.dest[0] - this.pos.x)) * this.speed;
     this.pos.y += (Math.sign(this.dest[1] - this.pos.y)) * this.speed;
-    
+
     return this._super(me.Entity, 'update', [dt]);
   },
 
@@ -36,7 +36,7 @@ game.MovingEntity = me.Entity.extend({
   getDest: function getDest() {
     return this.destString;
   },
-  
+
   atDest: function atDest() {
     return this.pos.x == this.dest[0] && this.pos.y == this.dest[1];
   }
@@ -62,8 +62,8 @@ game.BoxerEntity = game.MovingEntity.extend({
     this.bounceHeight = 5;
     this.getReady();
   },
-  
-  update: function update(dt) { 
+
+  update: function update(dt) {
     if(game.data.state == "PUNCH") {
       this.punch();
     }
@@ -83,6 +83,8 @@ game.BoxerEntity = game.MovingEntity.extend({
   punch: function punch() {
     if(!this.renderable.isCurrentAnimation("punch")) {
       this.renderable.setCurrentAnimation("punch");
+      me.audio.stop('peebersback');
+      me.audio.play('punch');
     }
     this.setDest("punch");
     this.speed = 3;
@@ -172,6 +174,10 @@ game.PeebersEntity = game.MovingEntity.extend({
     }
     if(game.data.state == "PUNCH") {
       this.hit();
+    }
+    if(game.data.state == "SULK") {
+      me.audio.stop('peebersback');
+      me.audio.play('peebersad', true);
     }
     return (this._super(game.MovingEntity, 'update', [dt]));
   }

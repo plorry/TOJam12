@@ -1,3 +1,15 @@
+/**
+ * GAME STATES:
+ *
+ * GETTINGREADY
+ * CANPUNCH
+ * PUNCH
+ * GETTINGUP
+ *
+ * GAME PROGRESS:
+ * 
+ */
+
 game.BoxingScreen = me.ScreenObject.extend({
     /**
      *  action to perform on state change

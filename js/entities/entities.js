@@ -8,7 +8,41 @@ game.DogEntity = me.Entity.extend({
   }
 });
 
-game.BoxerEntity = me.Entity.extend({
+/**
+ * An Entity that moves to wherever its destination is set
+ */
+game.MovingEntity = me.Entity.extend({
+  init: function(x, y, settings) {
+    this._super(me.Entity, 'init', [x, y, settings]);
+    this.POS = {
+      default: [0, 0]
+    };
+    this.setDest("default");
+    this.speed = 1;
+  },
+
+  update: function update(dt) { 
+    this.pos.x += (Math.sign(this.dest[0] - this.pos.x)) * this.speed;
+    this.pos.y += (Math.sign(this.dest[1] - this.pos.y)) * this.speed;
+    
+    return this._super(me.Entity, 'update', [dt]);
+  },
+
+  setDest: function setDest(dest) {
+    this.destString = dest;
+    this.dest = this.POS[dest];
+  },
+
+  getDest: function getDest() {
+    return this.destString;
+  },
+  
+  atDest: function atDest() {
+    return this.pos.x == this.dest[0] && this.pos.y == this.dest[1];
+  }
+});
+
+game.BoxerEntity = game.MovingEntity.extend({
   init: function(x, y, settings) {
     this._super(me.Entity, 'init', [1, 20, {
       image: 'boxer',
@@ -30,9 +64,6 @@ game.BoxerEntity = me.Entity.extend({
   },
   
   update: function update(dt) { 
-    this.pos.x += (Math.sign(this.dest[0] - this.pos.x)) * this.speed;
-    this.pos.y += (Math.sign(this.dest[1] - this.pos.y)) * this.speed;
-
     if(game.data.state == "PUNCH") {
       this.punch();
     }
@@ -45,17 +76,9 @@ game.BoxerEntity = me.Entity.extend({
       this.getReady();
     }
 
-    return this._super(me.Entity, 'update', [dt]);
+    return this._super(game.MovingEntity, 'update', [dt]);
   },
 
-  setDest: function setDest(dest) {
-    this.destString = dest;
-    this.dest = this.POS[dest];
-  },
-
-  getDest: function getDest() {
-    return this.destString;
-  },
 
   punch: function punch() {
     if(!this.renderable.isCurrentAnimation("punch")) {
@@ -65,9 +88,6 @@ game.BoxerEntity = me.Entity.extend({
     this.speed = 3;
   },
 
-  atDest: function atDest() {
-    return this.pos.x == this.dest[0] && this.pos.y == this.dest[1];
-  },
 
   getReady: function getReady() {
     if(!this.renderable.isCurrentAnimation("static")) {
@@ -78,9 +98,9 @@ game.BoxerEntity = me.Entity.extend({
   }
 });
 
-game.PeebersEntity = me.Entity.extend({
+game.PeebersEntity = game.MovingEntity.extend({
   init: function(x, y, settings) {
-    this._super(me.Entity, 'init', [140, 150, {
+    this._super(game.MovingEntity, 'init', [140, 200, {
       image: 'peebers',
       height: 52,
       width: 63
@@ -96,10 +116,29 @@ game.PeebersEntity = me.Entity.extend({
       {name: 18, delay: 100},
       {name: 19, delay: Infinity}
     ]);
-    this.renderable.addAnimation("getup", [20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]);
+    this.renderable.addAnimation("getup", [
+      {name: 20, delay: Infinity},
+      {name: 21, delay: Infinity},
+      {name: 22, delay: Infinity},
+      {name: 23, delay: Infinity},
+      {name: 24, delay: Infinity},
+      {name: 25, delay: Infinity},
+      {name: 26, delay: Infinity},
+      {name: 27, delay: Infinity},
+      {name: 28, delay: Infinity},
+      {name: 29, delay: Infinity},
+      {name: 30, delay: Infinity}
+    ]);
     this.renderable.setCurrentAnimation("fighting");
     this.down = false;
     this.canHit = true;
+    this.POS = {
+      initial: [140, 150],
+      bounce: [140, 170],
+      offscreen: [140, 240]
+    };
+    this.speed = 0.5;
+    this.setDest("initial");
   },
 
   hit: function hit() {
@@ -107,12 +146,18 @@ game.PeebersEntity = me.Entity.extend({
       this.renderable.setCurrentAnimation("hit");
       game.data.stamina = 0;
     }
+    this.setDest("bounce");
   },
 
   // Check for "hit" animation finishing
   hitAnimationDone: function hitAnimationDone() {
     return (this.renderable.isCurrentAnimation("hit") &&
       this.renderable.getCurrentAnimationFrame() == 6);
+  },
+
+  getupAnimationDone: function getupAnimationDone() {
+    return (this.renderable.isCurrentAnimation("getup") &&
+      this.renderable.getCurrentAnimationFrame() == 10);
   },
 
   update: function update(dt) {
@@ -122,11 +167,12 @@ game.PeebersEntity = me.Entity.extend({
     if(game.data.state == "GETTINGUP" && !this.renderable.isCurrentAnimation("getup")) {
       this.renderable.setCurrentAnimation("getup");
     }
+    if(game.data.state == "GETTINGUP") {
+      this.renderable.setAnimationFrame(Math.floor(game.data.stamina));
+    }
     if(game.data.state == "PUNCH") {
       this.hit();
     }
-
-    return (this._super(me.Entity, 'update', [dt]));
+    return (this._super(game.MovingEntity, 'update', [dt]));
   }
-
 });

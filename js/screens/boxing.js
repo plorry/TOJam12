@@ -7,7 +7,7 @@
  * GETTINGUP
  *
  * GAME PROGRESS:
- * 
+ *
  */
 
 game.BoxingScreen = me.ScreenObject.extend({
@@ -79,7 +79,7 @@ const StaminaMeter = me.Renderable.extend({
       this.stamina -= 1;
     }
     if(game.data.stamina < 100 && game.data.stamina > 0) {
-      game.data.stamina -= 0.2; 
+      game.data.stamina -= 0.2;
     }
   }
 });

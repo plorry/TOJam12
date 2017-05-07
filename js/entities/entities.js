@@ -179,6 +179,10 @@ game.PeebersEntity = game.MovingEntity.extend({
       me.audio.stop('peebersback');
       me.audio.play('peebersad', true);
     }
+    if(game.data.state == "COMEBACK") {
+      me.audio.stop('peebersad');
+      me.audio.play('peebersback', true);
+    }
     return (this._super(game.MovingEntity, 'update', [dt]));
   }
 });
